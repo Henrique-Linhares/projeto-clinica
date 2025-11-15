@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "pacientes")
 @AllArgsConstructor
@@ -17,4 +20,8 @@ public class Paciente {
     private Long id;
     private User user;
     private Integer idade;
+
+    // Um paciente pode ter muitas consultas
+    @OneToMany(mappedBy = "paciente", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Consulta> consultas = new ArrayList<>();
 }
