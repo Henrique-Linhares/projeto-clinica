@@ -28,12 +28,12 @@ public class Consulta {
 
     // Muitas consultas tem um médico
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_medico", nullable = false)
+    @JoinColumn(name = "id_medico")
     private Medico medico;
 
     // Muitas consultas tem um paciente
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_paciente", nullable = false)
+    @JoinColumn(name = "id_paciente")
     private Paciente paciente;
 
     // Uma consulta tem muitos exames
