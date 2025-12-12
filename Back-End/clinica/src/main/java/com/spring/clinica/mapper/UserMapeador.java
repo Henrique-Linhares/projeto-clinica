@@ -7,9 +7,8 @@ import com.spring.clinica.dto.response.UserResponse;
 import com.spring.clinica.entity.User;
 
 @Mapper(componentModel = "spring") 
-public interface UserMapper {
-
-    UserResponse toResponse(User user); 
+public interface UserMapeador {
+    UserResponse toResponse(User user);
 
     User toEntity(UserRequest userRequest);
     
