@@ -6,7 +6,7 @@ import com.spring.clinica.entity.Consulta;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface ConsultaMapper {
+public interface ConsultaMapeador {
 
     ConsultaResponse toResponse (Consulta consulta);
 

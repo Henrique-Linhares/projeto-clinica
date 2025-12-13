@@ -6,7 +6,7 @@ import com.spring.clinica.entity.Paciente;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface PacienteMapper {
+public interface PacienteMapeador {
 
     PacienteResponse toResponse(Paciente paciente);
 
