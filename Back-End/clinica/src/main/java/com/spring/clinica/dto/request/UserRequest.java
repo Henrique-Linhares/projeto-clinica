@@ -1,9 +1,8 @@
 package com.spring.clinica.dto.request;
 
-import java.util.Set;
 
-import com.spring.clinica.entity.Role;
+import com.spring.clinica.entity.enums.UserRole;
 
-public record UserRequest(String email, String senha, Set<Role> roles) {
+public record UserRequest(String login, String senha, UserRole role) {
 
 }

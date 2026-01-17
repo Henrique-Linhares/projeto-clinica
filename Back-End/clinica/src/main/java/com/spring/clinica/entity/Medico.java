@@ -18,6 +18,9 @@ public class Medico {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_medico")
     private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
     private String especialidade;
 
