@@ -3,7 +3,7 @@ package com.spring.clinica.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.spring.clinica.dto.request.PacienteRequest;
@@ -11,35 +11,27 @@ import com.spring.clinica.dto.response.PacienteResponse;
 import com.spring.clinica.entity.Paciente;
 import com.spring.clinica.entity.User;
 import com.spring.clinica.repository.PacienteRepository;
-import com.spring.clinica.repository.UserRepository;
 
 import jakarta.transaction.Transactional;
 
 @Service
 public class PacienteService {
 
-    @Autowired
     private final PacienteRepository pacienteRepository;
 
-    @Autowired
-    private final UserRepository userRepository;
-
-    // Injeção via construtor (melhor prática que @Autowired no campo)
-    public PacienteService(PacienteRepository pacienteRepository, UserRepository userRepository) {
+    public PacienteService(PacienteRepository pacienteRepository) {
         this.pacienteRepository = pacienteRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional
     public PacienteResponse criaPaciente(PacienteRequest request) {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        User userLogado = (User) authentication.getPrincipal();
+
         Paciente paciente = new Paciente();
         paciente.setIdade(request.idade());
+        paciente.setUser(userLogado); 
 
-        // Busca o usuário pelo ID 
-        User user = userRepository.findById(request.userId())
-                .orElseThrow(() -> new RuntimeException("Usuário não encontrado"));
-
-        paciente.setUser(user);
         Paciente novoPaciente = pacienteRepository.save(paciente);
 
         return new PacienteResponse(
@@ -55,20 +47,18 @@ public class PacienteService {
 
         return new PacienteResponse(
                 paciente.getId(),
-                paciente.getUser() != null ? paciente.getUser().getLogin() : "Sem login",
+                paciente.getUser() != null ? paciente.getUser().getLogin() : "Sem login associado",
                 paciente.getIdade(),
-                List.of() 
-        );
+                List.of());
     }
 
     public List<PacienteResponse> listarTodos() {
         return pacienteRepository.findAll().stream()
                 .map(paciente -> new PacienteResponse(
                         paciente.getId(),
-                        paciente.getUser() != null ? paciente.getUser().getLogin() : "Sem login",
+                        paciente.getUser() != null ? paciente.getUser().getLogin() : "Sem login associado",
                         paciente.getIdade(),
-                        List.of()
-                ))
+                        List.of()))
                 .collect(Collectors.toList());
     }
 
@@ -76,17 +66,16 @@ public class PacienteService {
     public PacienteResponse atualizar(Long id, PacienteRequest request) {
         Paciente paciente = pacienteRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Paciente não encontrado com ID: " + id));
-        
+
         paciente.setIdade(request.idade());
-                
+
         Paciente pacienteAtualizado = pacienteRepository.save(paciente);
-        
+
         return new PacienteResponse(
                 pacienteAtualizado.getId(),
                 pacienteAtualizado.getUser().getLogin(),
                 pacienteAtualizado.getIdade(),
-                List.of()
-        );
+                List.of());
     }
 
     @Transactional

@@ -20,12 +20,8 @@ public class MedicoService {
     @Autowired
     private MedicoRepository medicoRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
-    public MedicoService(MedicoRepository medicoRepository, UserRepository userRepository) {
+    public MedicoService(MedicoRepository medicoRepository) {
         this.medicoRepository = medicoRepository;
-        this.userRepository = userRepository;
     }
 
     @Transactional
