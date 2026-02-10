@@ -22,7 +22,7 @@ public class TokenService {
     try {
         Algorithm algorithm = Algorithm.HMAC256(secret);
         String token = JWT.create()
-                .withIssuer("clinica") // ← Manter como "clinica"
+                .withIssuer("clinica")
                 .withSubject(user.getLogin())
                 .withExpiresAt(generateExpirationDate())
                 .sign(algorithm);
@@ -42,8 +42,8 @@ public String validateToken(String token) {
                 .getSubject();
         return subject;
         
-    } catch (JWTVerificationException exception) {
-        exception.printStackTrace();
+    } catch (JWTVerificationException e) {
+        e.printStackTrace();
         return "";
     }
 }
